@@ -11,12 +11,12 @@ public class Main {
 		Runtime runtime = Runtime.getRuntime();
 		final Process process;
 		
-		String src = "#include <stdio.h>\nint main(void) { printf(\"Hello world\"); } ";
-		//String src2 = "int main(void) {return 0};";
+		//String src = "#include <stdio.h>\nint main(void) { printf(\"Hello world\") } ";
+		String src = "int main(void) {return 0;};";
 		
 		//process = runtime.exec(new String [] {"docker","run","docker-gcc","/bin/bash","echo '" + src2 + "' | gcc -xc -c - "});
 		//process = runtime.exec(new String [] {"/bin/sh","-c","docker run docker-gcc echo '"+ src +"' | gcc -xc -c - "});
-		process = runtime.exec(new String [] {"/bin/sh","-c","docker run --rm -v \"$PWD\":/usr/src/myapp -w /usr/src/myapp gcc:4.9 echo '"+ src +"' | gcc -xc -c - "});
+		process = runtime.exec(new String [] {"/bin/bash","-c","docker run gcc:4.9 /bin/bash -c \"echo '"+ src +"' | gcc -xc -\""});
 		
 		// Consommation de la sortie standard de l'application externe dans un Thread separe
 		new Thread() {
