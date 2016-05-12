@@ -14,7 +14,7 @@ public class Main {
 		String src = "#include <stdio.h> \nint main(void) { printf(\"Hello world\\\\n\");} ";
 		System.out.println(src);
 		//String src = "int main(void) {return 0;};";
-		String srcsrc = "docker run gcc:4.9 /bin/bash -c \'printf \"#include <stdio.h> \\\\nint main(void) { printf(\\\"Hello world\\\\\\\n\\\");}\"|gcc -xc - && ./a.out\'";
+		String srcsrc = "docker run gcc:4.9 /bin/bash -c \'printf \"#include <iostream> \\\\nint main(void) { std::cout << \\\"Hello world\\\" << std::endl;}\"|g++ -xc++ - && ./a.out\'";
 		System.out.println(srcsrc);
 		
 		//process = runtime.exec(new String [] {"docker","run","docker-gcc","/bin/bash","echo '" + src2 + "' | gcc -xc -c - "});
