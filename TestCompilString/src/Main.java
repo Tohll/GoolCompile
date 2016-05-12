@@ -7,16 +7,19 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		
+		/* Commande qui marche en bash : docker run gcc:4.9 /bin/bash -c 'printf "#include <stdio.h> \nint main(void) { printf(\"Hello world\\\\n\");}"|gcc -xc - && ./a.out'; */
 		Runtime runtime = Runtime.getRuntime();
 		final Process process;
 		
-		//String src = "#include <stdio.h>\nint main(void) { printf(\"Hello world\") } ";
-		String src = "int main(void) {return 0;};";
+		String src = "#include <stdio.h> \nint main(void) { printf(\"Hello world\\\\n\");} ";
+		System.out.println(src);
+		//String src = "int main(void) {return 0;};";
+		String srcsrc = "docker run gcc:4.9 /bin/bash -c \'printf \"#include <stdio.h> \\\\nint main(void) { printf(\\\"Hello world\\\\\\\n\\\");}\"|gcc -xc - && ./a.out\'";
+		System.out.println(srcsrc);
 		
 		//process = runtime.exec(new String [] {"docker","run","docker-gcc","/bin/bash","echo '" + src2 + "' | gcc -xc -c - "});
 		//process = runtime.exec(new String [] {"/bin/sh","-c","docker run docker-gcc echo '"+ src +"' | gcc -xc -c - "});
-		process = runtime.exec(new String [] {"/bin/bash","-c","docker run gcc:4.9 /bin/bash -c \"echo '"+ src +"' | gcc -xc -\""});
+		process = runtime.exec(new String [] {"/bin/bash","-c",srcsrc});
 		
 		// Consommation de la sortie standard de l'application externe dans un Thread separe
 		new Thread() {
