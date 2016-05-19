@@ -1,0 +1,4 @@
+String head, fileName;
+		head = input.substring(input.indexOf("public class")+13);
+		fileName = head.substring(0, head.indexOf("{")-1);
+		fileName.replaceAll("\\s+","");
