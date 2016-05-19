@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class MainTest {
 
 	/**
@@ -21,13 +23,13 @@ public class MainTest {
 
 		String srcinput = new String();
 		try {
-			srcinput = readFile("/home/artifact/Desktop/HelloWorld.java");
+			srcinput = readFile("/home/arrivault/Codes/GOOL_ALL/GOOL_Github/tests/GOOLINPUTJAVA/helloworld.java");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		Map <String, String> input = new HashMap<String,String>();
-		input.put("HelloWorld.java", srcinput);
+		input.put("helloworld.java", srcinput);
 		
 		Map <String, String> result = null;
 		
@@ -41,6 +43,7 @@ public class MainTest {
 		
 		String commande = compiler.commandBuilder(result);
 		System.out.println(commande);
+		//System.out.println(StringEscapeUtils.escapeJava(commande));
 		
 		/*for (Map.Entry entree : result.entrySet()) {
 			
@@ -50,14 +53,56 @@ public class MainTest {
 			
 		}*/
 		
-		/*Runtime runtime = Runtime.getRuntime();
+		Runtime runtime = Runtime.getRuntime();
 		final Process process;
 		
-		//process = runtime.exec(new String [] {"/bin/bash","-c", commande}); 
+		process = runtime.exec(new String [] {"/bin/bash","-c", commande}); 
 		
-		process = runtime.exec(new String [] {"/bin/bash","-c", "docker run gcc:4.9 /bin/bash -c echo 1 && echo 2"});*/
+		//process = runtime.exec(new String [] {"/bin/bash","-c", "docker run gcc:4.9 /bin/bash -c echo 1 && echo 2"});
 		
-		
+		new Thread() {
+			public void run() {
+				try {
+					BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+					String line = "";
+					try {
+						while((line = reader.readLine()) != null) {
+							// Traitement du flux de sortie de l'application
+							
+							System.out.println(line);
+							
+						}
+					} finally {
+						reader.close();
+					}
+				} catch(IOException ioe) {
+					ioe.printStackTrace();
+				}
+			}
+		}.start();
+
+		// Consommation de la sortie d'erreur de l'application externe dans un Thread separe
+		new Thread() {
+			public void run() {
+				try {
+					BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+					String line = "";
+					try {
+						while((line = reader.readLine()) != null) {
+							// Traitement du flux d'erreur de l'application si besoin est
+							
+							System.err.println(line);
+							
+						}
+						
+					} finally {
+						reader.close();
+					}
+				} catch(IOException ioe) {
+					ioe.printStackTrace();
+				}
+			}
+		}.start();
 		
 	}
 	
